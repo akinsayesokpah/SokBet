@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Betting Platform</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; }
+    header, nav, section, footer { padding: 20px; }
+    header { background: #00bfa5; text-align: center; }
+    nav { background: #1f1f1f; display: flex; justify-content: center; flex-wrap: wrap; }
+    nav a { color: #fff; text-decoration: none; margin: 10px; padding: 10px; }
+    nav a:hover { background: #00bfa5; border-radius: 5px; }
+    section { background: #1a1a1a; margin: 20px auto; max-width: 1000px; border-radius: 10px; }
+    .game, .betting, .wallet, .login, .admin, .esports { padding: 20px; border-bottom: 1px solid #333; }
+    input, select, button { padding: 10px; margin: 10px 5px; border-radius: 5px; }
+    button { cursor: pointer; background-color: #00bfa5; border: none; color: #000; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ProBet Zone</h1>
+    <p>Casino | Sports | eSports | Wallet | Admin</p>
+  </header>
+  <nav>
+    <a href="#casino">Casino</a>
+    <a href="#sports">Sports</a>
+    <a href="#esports">eSports</a>
+    <a href="#wallet">Wallet</a>
+    <a href="#login">Login</a>
+    <a href="#admin">Admin</a>
+  </nav>  <section id="casino" class="game">
+    <h2>Casino - Slot Machine</h2>
+    <p id="slotResult">Press spin to play</p>
+    <button onclick="spinSlot()">Spin</button>
+  </section>  <section id="sports" class="betting">
+    <h2>Sports Betting</h2>
+    <select id="match">
+      <option value="2">Team A vs Team B (2.0)</option>
+      <option value="1.5">Team C vs Team D (1.5)</option>
+      <option value="3">Team E vs Team F (3.0)</option>
+    </select>
+    <input type="number" id="stake" placeholder="Enter stake">
+    <button onclick="placeBet()">Place Bet</button>
+    <p id="betResult"></p>
+  </section>  <section id="esports" class="esports">
+    <h2>eSports Betting</h2>
+    <select id="esportMatch">
+      <option value="2.5">CS:GO Match 1 (2.5)</option>
+      <option value="1.8">Dota 2 Match 2 (1.8)</option>
+    </select>
+    <input type="number" id="esportStake" placeholder="Enter stake">
+    <button onclick="placeEsportBet()">Place Bet</button>
+    <p id="esportBetResult"></p>
+  </section>  <section id="wallet" class="wallet">
+    <h2>Wallet System</h2>
+    <p>Balance: $<span id="balance">1000</span></p>
+    <input type="number" id="depositAmount" placeholder="Deposit Amount">
+    <button onclick="deposit()">Deposit</button>
+    <input type="number" id="withdrawAmount" placeholder="Withdraw Amount">
+    <button onclick="withdraw()">Withdraw</button>
+  </section>  <section id="login" class="login">
+    <h2>User Login</h2>
+    <input type="text" placeholder="Username">
+    <input type="password" placeholder="Password">
+    <button>Login</button>
+  </section>  <section id="admin" class="admin">
+    <h2>Admin Panel</h2>
+    <p>Manage users, odds, events (UI only)</p>
+    <button onclick="alert('Accessing admin tools...')">Enter Admin</button>
+  </section>  <footer style="text-align:center; padding: 20px; background: #0a0a0a;">
+    <p>&copy; 2025 ProBet Zone. All rights reserved.</p>
+  </footer>  <script>
+    let balance = 1000;
+
+    function spinSlot() {
+      const symbols = ['7', 'BAR', 'Cherry', 'Bell', 'Lemon'];
+      const result = [
+        symbols[Math.floor(Math.random() * symbols.length)],
+        symbols[Math.floor(Math.random() * symbols.length)],
+        symbols[Math.floor(Math.random() * symbols.length)]
+      ];
+      document.getElementById("slotResult").innerText = `Result: ${result.join(' | ')}`;
+    }
+
+    function placeBet() {
+      const odds = parseFloat(document.getElementById("match").value);
+      const stake = parseFloat(document.getElementById("stake").value);
+      if (isNaN(stake) || stake <= 0) return alert("Invalid stake");
+      if (stake > balance) return alert("Insufficient balance");
+      const win = Math.random() < 0.5;
+      if (win) {
+        const payout = stake * odds;
+        balance += payout;
+        document.getElementById("betResult").innerText = `You won $${payout.toFixed(2)}!`;
+      } else {
+        balance -= stake;
+        document.getElementById("betResult").innerText = "You lost. Try again!";
+      }
+      updateBalance();
+    }
+
+    function placeEsportBet() {
+      const odds = parseFloat(document.getElementById("esportMatch").value);
+      const stake = parseFloat(document.getElementById("esportStake").value);
+      if (isNaN(stake) || stake <= 0) return alert("Invalid stake");
+      if (stake > balance) return alert("Insufficient balance");
+      const win = Math.random() < 0.5;
+      if (win) {
+        const payout = stake * odds;
+        balance += payout;
+        document.getElementById("esportBetResult").innerText = `You won $${payout.toFixed(2)}!`;
+      } else {
+        balance -= stake;
+        document.getElementById("esportBetResult").innerText = "You lost the bet.";
+      }
+      updateBalance();
+    }
+
+    function deposit() {
+      const amount = parseFloat(document.getElementById("depositAmount").value);
+      if (isNaN(amount) || amount <= 0) return alert("Enter valid amount");
+      balance += amount;
+      updateBalance();
+    }
+
+    function withdraw() {
+      const amount = parseFloat(document.getElementById("withdrawAmount").value);
+      if (isNaN(amount) || amount <= 0 || amount > balance) return alert("Invalid withdraw");
+      balance -= amount;
+      updateBalance();
+    }
+
+    function updateBalance() {
+      document.getElementById("balance").innerText = balance.toFixed(2);
+    }
+  </script></body>
+</html>
